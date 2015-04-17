@@ -1,0 +1,22 @@
+<!doctype html>
+<html ng-app>
+	<head>
+		<title>Beacon AngularJS</title>
+		<script src="angular.min.js"></script>
+		<script src="beacon.js"></script>
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+
+	<body>
+		<div ng-controller="Beacon">
+			<p>Number of beacons: {{beacons.page.totalElements}}</p>
+			<ul>
+				<li ng-repeat="beacon in beacons._embedded.beacons">
+					<p>Beacon <a href="{{beacon._links.self.href}}">{{beacon.beaconId}}</a></p>
+					<p>The URL is <strong>{{beacon.url}}</strong></p>
+				</li>
+			</ul>
+		</div>
+		
+	</body>
+</html>
