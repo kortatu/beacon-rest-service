@@ -6,3 +6,5 @@
 .classpath
 /.settings/
 /.gradle
+/config/
+/env.sh

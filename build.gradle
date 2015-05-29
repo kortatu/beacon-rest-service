@@ -1,9 +1,12 @@
 buildscript {
+	ext {
+        springBootVersion = '1.2.3.RELEASE'
+    }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath 'se.transmode.gradle:gradle-docker:1.2'
     }
 }
@@ -13,10 +16,11 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'docker'
+apply plugin: 'maven'
 
+version = "0.1.3-SNAPSHOT"
 jar {
     baseName = 'beacon-rest-service'
-    version =  '0.1.2'
 }
 
 repositories {
@@ -33,20 +37,45 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-undertow")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-data-rest")
-    //runtime("org.hsqldb:hsqldb:2.3.2")
+    runtime("org.hsqldb:hsqldb:2.3.2")
     runtime("mysql:mysql-connector-java:5.1.34")
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("junit:junit")
 }
 
-docker {    
+//Boot plugins
+bootRun {
+    if ( project.hasProperty('args') ) {
+        args project.args.split('\\s+')
+    }
+}
+
+bootRepackage {
+	classifier = 'exe'
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+          parent { 
+            groupId 'org.springframework.boot'
+            artifactId 'spring-boot-starter-parent'
+            version "1.2.2.RELEASE"
+          }
+        }
+    }
+}
+
+docker {
     group 'kortatu'    
     maintainer 'Álvaro González de Paz "alvaro.gonzalez@cgi.com"'
 }
 
 distDocker {
-  tagVersion='0.1.2'
-  exposePort 8080 
+	tagVersion='${project.version}'
+	exposePort 8080
+  	useApi true
+  	hostUrl 'http://localhost:4243' 
 }
 
 task wrapper(type: Wrapper) {

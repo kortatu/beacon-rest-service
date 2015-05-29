@@ -1,0 +1,13 @@
+spring:
+    jpa:
+        generate-ddl: true
+        hibernate:
+            ddl-auto: update
+---
+
+spring:
+    profiles: prod
+    datasource:
+        url: jdbc:mysql://${MYSQL_PORT_3306_TCP_ADDR}:${MYSQL_PORT_3306_TCP_PORT}/${MYSQL_ENV_MYSQL_DATABASE}?useUnicode=true&characterEncoding=UTF-8
+        username: ${MYSQL_ENV_MYSQL_USER}
+        password: ${MYSQL_ENV_MYSQL_PASSWORD}

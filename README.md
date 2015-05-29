@@ -15,3 +15,8 @@ Remove beacon:
 
 curl -i -X DELETE http://127.0.0.1:8080/beacons/13
 
+Note to gradle bootRun
+In order to pass command line arguments t the javaExec task you need to do something like:
+gradle bootRun -Pargs="--spring.profiles.active=prod,mysql"
+
+
